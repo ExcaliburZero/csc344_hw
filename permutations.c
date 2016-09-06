@@ -46,6 +46,12 @@ int factorial(int n) {
     }
 }
 
+void swap(char *list, int a, int b) {
+    int holder = list[a];
+    list[a] = list[b];
+    list[b] = holder;
+}
+
 /**
  * Returns an array of all of the possible permutations of the given character
  * array.
@@ -59,11 +65,40 @@ int factorial(int n) {
 char **getPermutations(char *word) {
     int wordLength = strlen(word);
     int numberOfPermutations = factorial(wordLength);
-    char **permutations = malloc(sizeof(char) * numberOfPermutations);
+    char **permutations = malloc(sizeof(char) * numberOfPermutations * wordLength * 2);
 
-    // Get all of the permutations of the given string
-    permutations[0] = "hi";
-    permutations[1] = "ih";
+    // Use Heap's Algorithm as per the psedocode here:
+    // https://en.wikipedia.org/w/index.php?title=Heap%27s_algorithm&oldid=733235123
+    int nextPermutation = 0;
+    int counters[wordLength];
+    for (int i = 0; i < wordLength; i++) {
+        counters[i] = 0;
+    }
+
+    char *word2 = malloc(sizeof(char) * wordLength);
+    permutations[nextPermutation++] = word;
+    strcpy(word2, word);
+    word = malloc(sizeof(char) * wordLength);
+    strcpy(word, word2);
+    int i = 0;
+    while (i < wordLength) {
+        if (counters[i] < i) {
+            if (i % 2 == 0) {
+                swap(word, 0, i);
+            } else {
+                swap(word, counters[i], i);
+            }
+            permutations[nextPermutation++] = word;
+            strcpy(word2, word);
+            word = malloc(sizeof(char) * wordLength);
+            strcpy(word, word2);
+            counters[i]++;
+            i = 0;
+        } else {
+            counters[i] = 0;
+            i++;
+        }
+    }
 
     return permutations;
 }
@@ -78,10 +113,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+
     // If the user has entered a string then print out its permutations
-    char *word = "Hi";
+    char *word = argv[1];
+    int wordLength = strlen(word);
+    int numberOfPermutations = factorial(wordLength);
     char **permutations = getPermutations(word);
-    int numberOfPermutations = strlen(word);
     for (int i = 0; i < numberOfPermutations; i++) {
         // Print out the given permutation
         printf("%s\n", permutations[i]);
