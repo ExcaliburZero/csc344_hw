@@ -1,11 +1,15 @@
 /*
  * Student Name:        Christopher Wells
- * Assignment Number:   1
+ * Assignment Number:   1.A
  * Due Date:            XXXXXXXX
  *
  * Program Description:
  *   Prints out all of the permutations of the string that the user gives in
  *   via stdin.
+ *
+ * Implementation Description:
+ *   The getPermutations() function makes use of Heap's Algorithm to generate
+ *   all of the possible permutations of the given string.
  *
  * Input:
  *   ./permutations string_to_permutate
@@ -21,6 +25,7 @@
  *   usage information is printed out to the user.
  *
  * Data Description:
+ *   XXXXXXXXXXXXXXXXXXXXXXX
  *
  */
 #include <stdio.h>
@@ -46,6 +51,13 @@ int factorial(int n) {
     }
 }
 
+/**
+ * Swaps the elements at the two given indexes of the given array.
+ *
+ * @param list The list to swap the elements of.
+ * @param a The first swap index.
+ * @param b The second swap index.
+ */
 void swap(char *list, int a, int b) {
     int holder = list[a];
     list[a] = list[b];
@@ -67,7 +79,8 @@ char **getPermutations(char *word) {
     int numberOfPermutations = factorial(wordLength);
     char **permutations = malloc(sizeof(char) * numberOfPermutations * wordLength * 2);
 
-    // Use Heap's Algorithm as per the psedocode here:
+    // Uses Heap's Algorithm to generate all of the permutations, as per the
+    // psedocode here:
     // https://en.wikipedia.org/w/index.php?title=Heap%27s_algorithm&oldid=733235123
     int nextPermutation = 0;
     int counters[wordLength];
