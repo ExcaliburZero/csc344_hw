@@ -123,5 +123,4 @@ int main(int argc, char *argv[]) {
         // Print out the given permutation
         printf("%s\n", permutations[i]);
     }
-    free(permutations);
 }
