@@ -11,9 +11,10 @@
  *   ./permutations string_to_permutate
  *
  * Output:
- *   first_permutation ⇐ 1st permutation
- *   second_permutation ⇐ 2nd permutation
+ *   first_permutation
+ *   second_permutation
  *   ...
+ *   last_permutation
  *
  * Errors:
  *   If the user does not give an input string in the command, then program
@@ -82,20 +83,8 @@ int main(int argc, char *argv[]) {
     char **permutations = getPermutations(word);
     int numberOfPermutations = strlen(word);
     for (int i = 0; i < numberOfPermutations; i++) {
-        // Get the number ending for the given permutation number (ex. 1st)
-        char *ending;
-        if (i + 1 == 1) {
-            ending = "st";
-        } else if (i + 1 == 2) {
-            ending = "nd";
-        } else if(i + 1 == 3) {
-            ending = "rd";
-        } else {
-            ending = "th";
-        }
-
         // Print out the given permutation
-        printf("%s ⇐ %d%s permutation\n", permutations[i], i + 1, ending);
+        printf("%s\n", permutations[i]);
     }
     free(permutations);
 }
