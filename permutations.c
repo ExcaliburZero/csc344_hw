@@ -23,10 +23,6 @@
  * Errors:
  *   If the user does not give an input string in the command, then program
  *   usage information is printed out to the user.
- *
- * Data Description:
- *   XXXXXXXXXXXXXXXXXXXXXXX
- *
  */
 #include <stdio.h>
 #include <stdlib.h>

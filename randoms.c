@@ -41,10 +41,6 @@
  *
  *   - If the user does not give a flag argument then an error message is
  *     printed.
- *
- * Data Description:
- *   XXXXXXXXXXXXXXXXXXXXXXXXXXXX
- *
  */
 #include <ctype.h>
 #include <errno.h>
