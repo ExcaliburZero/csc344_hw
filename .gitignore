@@ -39,3 +39,7 @@ randoms
 # Debug files
 *.dSYM/
 *.su
+
+# Doxygen files
+html/
+latex/
