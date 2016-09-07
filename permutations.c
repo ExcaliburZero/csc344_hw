@@ -21,8 +21,11 @@
  *   last_permutation
  *
  * Errors:
- *   If the user does not give an input string in the command, then program
- *   usage information is printed out to the user.
+ *   - If the user does not give an input string in the command, then program
+ *     usage information is printed out to the user.
+ *
+ *   - If the user gives more than one command line argument then program usage
+ *     information is printed to the user.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,9 +40,10 @@ char **getPermutations(char*);
  */
 int main(int argc, char *argv[]) {
     // Make sure that the user has given an input string
-    if (argc == 1) {
+    int invalidArgumentError = 22;
+    if (argc != 2) {
         printf("usage: %s string_to_permute\n", argv[0]);
-        return 1;
+        return invalidArgumentError;
     }
 
 

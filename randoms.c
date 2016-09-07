@@ -84,11 +84,11 @@ int main(int argc, char *argv[]) {
                 break;
             case '?':
                 fprintf(stderr, "Invalid flag -%c.\n", optopt);
-                return(invalidArgumentError);
+                return invalidArgumentError;
                 break;
             case ':':
                 fprintf(stderr, "Arguement missing for -%c flag.\n", optopt);
-                return(invalidArgumentError);
+                return invalidArgumentError;
                 break;
         }
     }
@@ -96,11 +96,11 @@ int main(int argc, char *argv[]) {
     // Check for invalid settings
     if (amount <= 0) {
         fprintf(stderr, "Invalid amount %d.\nAmount must be greater than zero.\n", amount);
-        return(invalidArgumentError);
+        return invalidArgumentError;
     }
     if (lowerBound > upperBound) {
         fprintf(stderr, "Invalid range %d-%d.\nLower bound must be greater than the upper bound.\n", lowerBound, upperBound);
-        return(invalidArgumentError);
+        return invalidArgumentError;
     }
 
     // Generate and print the random numbers
