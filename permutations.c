@@ -32,6 +32,32 @@
 #include <stdlib.h>
 #include <string.h>
 
+int factorial(int);
+void swap(char*, int, int);
+char **getPermutations(char*);
+
+/**
+ * Prints out all of the permutations of the string given in through stdin.
+ */
+int main(int argc, char *argv[]) {
+    // Make sure that the user has given an input string
+    if (argc == 1) {
+        printf("usage: %s string_to_permute\n", argv[0]);
+        return 1;
+    }
+
+
+    // If the user has entered a string then print out its permutations
+    char *word = argv[1];
+    int wordLength = strlen(word);
+    int numberOfPermutations = factorial(wordLength);
+    char **permutations = getPermutations(word);
+    for (int i = 0; i < numberOfPermutations; i++) {
+        // Print out the given permutation
+        printf("%s\n", permutations[i]);
+    }
+}
+
 /**
  * Returns the factorial of the given number.
  *
@@ -114,26 +140,4 @@ char **getPermutations(char *word) {
     }
 
     return permutations;
-}
-
-/**
- * Prints out all of the permutations of the string given in through stdin.
- */
-int main(int argc, char *argv[]) {
-    // Make sure that the user has given an input string
-    if (argc == 1) {
-        printf("usage: %s string_to_permute\n", argv[0]);
-        return 1;
-    }
-
-
-    // If the user has entered a string then print out its permutations
-    char *word = argv[1];
-    int wordLength = strlen(word);
-    int numberOfPermutations = factorial(wordLength);
-    char **permutations = getPermutations(word);
-    for (int i = 0; i < numberOfPermutations; i++) {
-        // Print out the given permutation
-        printf("%s\n", permutations[i]);
-    }
 }

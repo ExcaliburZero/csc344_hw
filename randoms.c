@@ -44,6 +44,42 @@
 #include <time.h>
 #include <unistd.h>
 
+int getRandomNum(int, int);
+int *generateRandomNumbers(int, int, int);
+
+/**
+ *
+ */
+int main(int argc, char *argv[]) {
+    // Set the default values
+    int amount = 10;
+    int lowerBound = 1;
+    int upperBound = 100;
+
+    // Handle the command line arguments
+    char *options = ":n:l:u:";
+    int c;
+    while ((c = getopt(argc, argv, options)) != -1) {
+        switch (c) {
+            case 'n':
+                amount = atoi(optarg);
+                break;
+            case 'l':
+                lowerBound = atoi(optarg);
+                break;
+            case 'u':
+                upperBound = atoi(optarg);
+                break;
+        }
+    }
+
+    // Generate and print the random numbers
+    int *randomNumbers = generateRandomNumbers(amount, lowerBound, upperBound);
+    for (int i = 0; i < amount; i++) {
+        printf("%d\n", randomNumbers[i]);
+    }
+}
+
 /**
  * Returns a random integer within the given range inclusively.
  *
@@ -87,37 +123,4 @@ int *generateRandomNumbers(int amount, int lowerBound, int upperBound) {
     }
 
     return randomNumbers;
-}
-
-/**
- *
- */
-int main(int argc, char *argv[]) {
-    // Set the default values
-    int amount = 10;
-    int lowerBound = 1;
-    int upperBound = 100;
-
-    // Handle the command line arguments
-    char *options = ":n:l:u:";
-    int c;
-    while ((c = getopt(argc, argv, options)) != -1) {
-        switch (c) {
-            case 'n':
-                amount = atoi(optarg);
-                break;
-            case 'l':
-                lowerBound = atoi(optarg);
-                break;
-            case 'u':
-                upperBound = atoi(optarg);
-                break;
-        }
-    }
-
-    // Generate and print the random numbers
-    int *randomNumbers = generateRandomNumbers(amount, lowerBound, upperBound);
-    for (int i = 0; i < amount; i++) {
-        printf("%d\n", randomNumbers[i]);
-    }
 }
