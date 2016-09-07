@@ -38,6 +38,16 @@
 #include <time.h>
 
 /**
+ * Returns a random integer within the given range inclusively.
+ *
+ * XXXXXXXXXXXXXX
+ */
+int getRandomNum(int lowerBound, int upperBound) {
+    int difference = upperBound - lowerBound + 1;
+    return (rand() % difference) + lowerBound;
+}
+
+/**
  * Returns an array of random numbers of the given amount within the given
  * upper and lower bounds.
  *
@@ -53,6 +63,12 @@
  */
 int *generateRandomNumbers(int amount, int lowerBound, int upperBound) {
     int *randomNumbers = malloc(sizeof(int) * amount);
+    srand(time(NULL));
+
+    for (int i = 0; i < amount; i++) {
+        randomNumbers[i] = getRandomNum(lowerBound, upperBound);
+    }
+
     return randomNumbers;
 }
 
