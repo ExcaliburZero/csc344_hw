@@ -14,7 +14,7 @@
  *
  *   http://stackoverflow.com/a/822368/4764550
  *
- *   XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ *   getopt() is used to parse the command line arguments.
  *
  * Input:
  *   ./randoms [OPTIONS]
@@ -30,15 +30,24 @@
  *   last_random_number
  *
  * Errors:
- *   [ ] If the user gives a count zero or less then an error message is printed.
- *   [ ] If the user gives an invalid range where the upper bound is below the lower bound then an error message is printed.
- *   [ ] If the user gives one or more invalid flags then an error message is printed.
+ *   - If the user gives a count of zero or less then an error message is
+ *     printed.
+ *
+ *   - If the user gives an invalid range where the upper bound is below the
+ *     lower bound then an error message is printed.
+ *
+ *   - If the user gives one or more invalid flags then an error message is
+ *     printed.
+ *
+ *   - If the user does not give a flag argument then an error message is
+ *     printed.
  *
  * Data Description:
  *   XXXXXXXXXXXXXXXXXXXXXXXXXXXX
  *
  */
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -48,15 +57,22 @@ int getRandomNum(int, int);
 int *generateRandomNumbers(int, int, int);
 
 /**
+ * Prints out random numbers in a amount and range specified through command
+ * line flags.
  *
+ * @param argc The amount of command line arguments.
+ * @param argv The command line arguments.
+ * @returns The return code of the program.
  */
 int main(int argc, char *argv[]) {
+    int invalidArgumentError = 22;
+
     // Set the default values
     int amount = 10;
     int lowerBound = 1;
     int upperBound = 100;
 
-    // Handle the command line arguments
+    // Handle the command line flags
     char *options = ":n:l:u:";
     int c;
     while ((c = getopt(argc, argv, options)) != -1) {
@@ -70,7 +86,25 @@ int main(int argc, char *argv[]) {
             case 'u':
                 upperBound = atoi(optarg);
                 break;
+            case '?':
+                fprintf(stderr, "Invalid flag -%c.\n", optopt);
+                return(invalidArgumentError);
+                break;
+            case ':':
+                fprintf(stderr, "Arguement missing for -%c flag.\n", optopt);
+                return(invalidArgumentError);
+                break;
         }
+    }
+
+    // Check for invalid settings
+    if (amount <= 0) {
+        fprintf(stderr, "Invalid amount %d.\nAmount must be greater than zero.\n", amount);
+        return(invalidArgumentError);
+    }
+    if (lowerBound > upperBound) {
+        fprintf(stderr, "Invalid range %d-%d.\nLower bound must be greater than the upper bound.\n", lowerBound, upperBound);
+        return(invalidArgumentError);
     }
 
     // Generate and print the random numbers
