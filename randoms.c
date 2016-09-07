@@ -47,7 +47,14 @@
 /**
  * Returns a random integer within the given range inclusively.
  *
- * XXXXXXXXXXXXXX
+ * @param lowerBound The lower bound of the random numbers.
+ * @param upperBound The upper bound of the random numbers.
+ * @returns A random number within the given range.
+ *
+ * >>> getRandomNum(1, 10)
+ * 5
+ * >>> getRandomNum(1, 10)
+ * 1
  */
 int getRandomNum(int lowerBound, int upperBound) {
     int difference = upperBound - lowerBound + 1;
