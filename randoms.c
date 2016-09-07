@@ -9,6 +9,11 @@
  *   range can be changed through the use of command line flags.
  *
  * Implementation Description:
+ *   Random number generation is handled using the rand() function seeded using
+ *   time(NULL) as shown in the following Stack Overflow answer.
+ *
+ *   http://stackoverflow.com/a/822368/4764550
+ *
  *   XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
  *
  * Input:
@@ -33,9 +38,11 @@
  *   XXXXXXXXXXXXXXXXXXXXXXXXXXXX
  *
  */
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 /**
  * Returns a random integer within the given range inclusively.
@@ -63,8 +70,11 @@ int getRandomNum(int lowerBound, int upperBound) {
  */
 int *generateRandomNumbers(int amount, int lowerBound, int upperBound) {
     int *randomNumbers = malloc(sizeof(int) * amount);
+
+    // Seed the random number generator
     srand(time(NULL));
 
+    // Generate random numbers and add them to the array until it is filled
     for (int i = 0; i < amount; i++) {
         randomNumbers[i] = getRandomNum(lowerBound, upperBound);
     }
@@ -76,11 +86,30 @@ int *generateRandomNumbers(int amount, int lowerBound, int upperBound) {
  *
  */
 int main(int argc, char *argv[]) {
+    // Set the default values
     int amount = 10;
     int lowerBound = 1;
     int upperBound = 100;
-    int *randomNumbers = generateRandomNumbers(amount, lowerBound, upperBound);
 
+    // Handle the command line arguments
+    char *options = ":n:l:u:";
+    int c;
+    while ((c = getopt(argc, argv, options)) != -1) {
+        switch (c) {
+            case 'n':
+                amount = atoi(optarg);
+                break;
+            case 'l':
+                lowerBound = atoi(optarg);
+                break;
+            case 'u':
+                upperBound = atoi(optarg);
+                break;
+        }
+    }
+
+    // Generate and print the random numbers
+    int *randomNumbers = generateRandomNumbers(amount, lowerBound, upperBound);
     for (int i = 0; i < amount; i++) {
         printf("%d\n", randomNumbers[i]);
     }
