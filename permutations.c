@@ -53,7 +53,6 @@ int main(int argc, char *argv[]) {
     int numberOfPermutations = factorial(wordLength);
     char **permutations = getPermutations(word);
     for (int i = 0; i < numberOfPermutations; i++) {
-        // Print out the given permutation
         printf("%s\n", permutations[i]);
     }
 }

@@ -14,7 +14,8 @@
  *
  *   http://stackoverflow.com/a/822368/4764550
  *
- *   getopt() is used to parse the command line arguments.
+ *   getopt() is used to parse the command line arguments. atoi() is used to
+ *   convert the string aruments into int values.
  *
  * Input:
  *   ./randoms [OPTIONS]
@@ -53,7 +54,7 @@ int getRandomNum(int, int);
 int *generateRandomNumbers(int, int, int);
 
 /**
- * Prints out random numbers in a amount and range specified through command
+ * Prints out random numbers in an amount and range specified through command
  * line flags.
  *
  * @param argc The amount of command line arguments.
