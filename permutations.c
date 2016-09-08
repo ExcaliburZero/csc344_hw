@@ -26,6 +26,9 @@
  *
  *   - If the user gives more than one command line argument then program usage
  *     information is printed to the user.
+ *
+ *   - If the user enters a literal empty string for the argument, then an
+ *     error message is printed.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,6 +49,11 @@ int main(int argc, char *argv[]) {
         return invalidArgumentError;
     }
 
+    // Make sure that the user did not give the empty string
+    if (strlen(argv[1]) == 0) {
+        fprintf(stderr, "Invalid string.\nThe string must have a length greater than zero.\n");
+        return invalidArgumentError;
+    }
 
     // If the user has entered a string then print out its permutations
     char *word = argv[1];
