@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < numberOfPermutations; i++) {
         printf("%s\n", permutations[i]);
     }
+    return 0;
 }
 
 /**
