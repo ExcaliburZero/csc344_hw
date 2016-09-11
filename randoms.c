@@ -1,7 +1,7 @@
 /*
  * Student Name:        Christopher Wells
  * Assignment Number:   1.B
- * Due Date:            XXXXXXXX
+ * Due Date:            Sep. 23, 2016
  *
  * Program Description:
  *   Prints out a list of random numbers. By default 10 random numbers between

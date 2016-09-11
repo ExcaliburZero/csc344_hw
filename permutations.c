@@ -1,7 +1,7 @@
 /*
  * Student Name:        Christopher Wells
  * Assignment Number:   1.A
- * Due Date:            XXXXXXXX
+ * Due Date:            Sep. 23, 2016
  *
  * Program Description:
  *   Prints out all of the permutations of the string that the user gives in
