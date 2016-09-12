@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < numberOfPermutations; i++) {
         printf("%s\n", permutations[i]);
     }
+    free(permutations);
     return 0;
 }
 
@@ -111,7 +112,7 @@ void swap(char *list, int a, int b) {
 char **getPermutations(char *word) {
     int wordLength = strlen(word);
     int numberOfPermutations = factorial(wordLength);
-    char **permutations = malloc(sizeof(char) * numberOfPermutations * wordLength * 2);
+    char **permutations = malloc(sizeof(char *) * numberOfPermutations);
 
     // Uses Heap's Algorithm to generate all of the permutations, as per the
     // psedocode here:
