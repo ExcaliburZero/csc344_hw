@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
         return invalidArgumentError;
     }
     if (lowerBound > upperBound) {
-        fprintf(stderr, "Invalid range %d-%d.\nLower bound must be greater than the upper bound.\n", lowerBound, upperBound);
+        fprintf(stderr, "Invalid range %d-%d.\nLower bound must be lesser than the upper bound.\n", lowerBound, upperBound);
         return invalidArgumentError;
     }
 
