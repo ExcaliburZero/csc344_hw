@@ -109,6 +109,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < amount; i++) {
         printf("%d\n", randomNumbers[i]);
     }
+    free(randomNumbers);
     return 0;
 }
 
