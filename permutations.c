@@ -39,7 +39,7 @@ void swap(char*, int, int);
 char **getPermutations(char*);
 
 /**
- * Prints out all of the permutations of the string given in through stdin.
+ * Prints out all of the permutations of the given string.
  */
 int main(int argc, char *argv[]) {
     // Make sure that the user has given an input string
