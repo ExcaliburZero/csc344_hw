@@ -1,23 +1,31 @@
 #include <iostream>
+#include "Arrival.cc"
 
 using namespace std;
 
-int* getInitialBoxes();
+Arrival* getArrival();
 
 int main(int argc, char *argv[]) {
-    cout << "Hello, World!\n";
-    int *boxes = getInitialBoxes();
-    delete [] boxes;
+    Arrival* arrival = getArrival();
+    cout << "type: " << arrival->type << "\n";
+    cout << "date: " << arrival->date << "\n";
+    cout << "food: " << arrival->foodType << "\n";
+    cout << "amnt: " << arrival->amount << "\n";
+    return 0;
 }
 
-int* getInitialBoxes() {
-    int *boxes = new int[4];
-    int nextBox = 0;
-    for(int i = 0; i < 4; i++) {
-        string foodType;
-        int boxAmount;
-        cin >> foodType >> boxAmount;
-        boxes[nextBox] = boxAmount;
-    }
-    return boxes;
+/**
+ * Takes in an arrival from the user and returns the generated Arrival object.
+ *
+ * @returns The user created Arrival object.
+ */
+Arrival* getArrival() {
+    string type;
+    string date;
+    string foodType;
+    int amount;
+
+    cin >> type >> date >> foodType >> amount;
+
+    return new Arrival(type, date, foodType, amount);
 }
