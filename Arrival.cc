@@ -1,3 +1,5 @@
+#include "Date.cc"
+
 using namespace std;
 
 /**
@@ -14,7 +16,7 @@ class Arrival {
         /**
          * The date related to the arrival. Ex: 10/01/2015.
          */
-        string date;
+        Date *date;
         /**
          * The food type related to the arrival. Ex: shrimp, crab.
          */
@@ -32,10 +34,17 @@ class Arrival {
          * @param f The food type related to the arrival.
          * @param a The amount related to the arrival.
          */
-        Arrival(string t, string d, string f, int a) {
+        Arrival(string t, Date *d, string f, int a) {
             type = t;
             date = d;
             foodType = f;
             amount = a;
+        };
+
+        string toString() {
+            return "type: " + type + "\n"
+                 + "date: " + date->toString() + "\n"
+                 + "food: " + foodType + "\n"
+                 + "amnt: " + to_string(amount);
         };
 };
