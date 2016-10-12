@@ -1,3 +1,6 @@
+#ifndef _Box_cc
+#define Box_cc
+
 using namespace std;
 
 class Box {
@@ -5,5 +8,11 @@ class Box {
         bool isOpen;
         int maxItems;
         int itemsLeft;
-        string expirationDate;
+        Date expirationDate;
+
+        bool operator < (const Box& o) const {
+            return expirationDate < o.expirationDate;
+        };
 };
+
+#endif

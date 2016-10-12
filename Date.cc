@@ -1,3 +1,8 @@
+#ifndef _Date_cc
+#define _Date_cc
+
+#include <iostream>
+
 using namespace std;
 
 class Date {
@@ -26,4 +31,18 @@ class Date {
         string toString() {
             return to_string(month) + "/" + to_string(day) + "/" + to_string(year);
         };
+
+        bool operator < (const Date& o) const {
+            if (year != o.year) {
+                return year < o.year;
+            } else if (month != o.month) {
+                return month < o.month;
+            } else if (day != o.day) {
+                return day < o.day;
+            } else {
+                return false;
+            }
+        }
 };
+
+#endif

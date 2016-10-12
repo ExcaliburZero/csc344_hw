@@ -1,3 +1,6 @@
+#ifndef _Arrival_cc
+#define _Arrival_cc
+
 #include "Date.cc"
 
 using namespace std;
@@ -48,3 +51,5 @@ class Arrival {
                  + "amnt: " + to_string(amount);
         };
 };
+
+#endif
