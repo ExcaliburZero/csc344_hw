@@ -2,19 +2,20 @@
 #include <string>
 #include "Arrival.cc"
 #include "Date.cc"
+#include "Truck.cc"
 
 using namespace std;
 
 Arrival* getArrival();
 
 int main(int argc, char *argv[]) {
-    Arrival* arrival1 = getArrival();
-    Arrival* arrival2 = getArrival();
-    cout << arrival1->date->toString() << endl;
-    bool i = (*(arrival1->date)) < (*(arrival2->date));
-    cout << i << endl;
-    cout << arrival2->date->toString() << endl;
-    //cout << arrival->toString() << "\n";
+    Truck truck;
+    truck.addBox("shrimp", new Date("10/27/2016"));
+    truck.addBox("shrimp", new Date("10/28/2016"));
+    truck.addBox("shrimp", new Date("10/29/2016"));
+    truck.addBox("shrimp", new Date("10/24/2016"));
+    cout << "Shrimp:  " << truck.shrimp.size() << endl;
+    cout << "Lobster: " << truck.lobster.size() << endl;
     return 0;
 }
 

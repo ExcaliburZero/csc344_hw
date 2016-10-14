@@ -1,13 +1,13 @@
-#ifndef _Shrimp_cc
-#define _Shrimp_cc
+#ifndef _Lobster_cc
+#define _Lobster_cc
 
 #include "Box.cc"
 
-class Shrimp : public Box {
+class Lobster : public Box {
     public:
-        Shrimp(Date *date) {
+        Lobster(Date *date) {
             isOpen = false;
-            maxItems = 50;
+            maxItems = 4;
             itemsLeft = maxItems;
             expirationDate = date;
         };
