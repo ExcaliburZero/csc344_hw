@@ -2,19 +2,27 @@
 #define _Truck_cc
 
 #include <queue>
+#include "Crab.cc"
 #include "Lobster.cc"
 #include "Shrimp.cc"
+#include "Swordfish.cc"
 
 class Truck {
     public:
         priority_queue <Box> shrimp;
         priority_queue <Box> lobster;
+        priority_queue <Box> crab;
+        priority_queue <Box> swordfish;
 
         void addBox(string foodType, Date *date) {
             if (foodType == "shrimp") {
                 shrimp.push(Shrimp(date));
             } else if (foodType == "lobster") {
                 lobster.push(Lobster(date));
+            } else if (foodType == "crab") {
+                crab.push(Crab(date));
+            } else if (foodType == "swordfish") {
+                swordfish.push(Swordfish(date));
             }
         }
 
@@ -29,16 +37,16 @@ class Truck {
         };
 
         void processStock(const Arrival *arrival) {
-            if (arrival->foodType == "shrimp") {
+            string foodType = arrival->foodType;
+            if (foodType == "shrimp"    ||
+                foodType == "lobster"   ||
+                foodType == "crab"      ||
+                foodType == "swordfish") {
                 for (int i = 0; i < arrival->amount; i++) {
-                    addBox("shrimp", arrival->date);
-                }
-            } else if (arrival->foodType == "lobster") {
-                for (int i = 0; i < arrival->amount; i++) {
-                    addBox("lobster", arrival->date);
+                    addBox(foodType, arrival->date);
                 }
             } else {
-                cout << "Invalid food type: " << arrival->foodType << endl;
+                cout << "Invalid food type: " << foodType << endl;
             }
         };
 

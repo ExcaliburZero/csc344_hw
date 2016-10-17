@@ -11,11 +11,13 @@ Arrival* getArrival();
 int main(int argc, char *argv[]) {
     Truck truck;
     truck.addBox("shrimp", new Date("10/27/2016"));
-    truck.addBox("shrimp", new Date("10/28/2016"));
-    truck.addBox("shrimp", new Date("10/29/2016"));
-    truck.addBox("shrimp", new Date("10/24/2016"));
-    cout << "Shrimp:  " << truck.shrimp.size() << endl;
-    cout << "Lobster: " << truck.lobster.size() << endl;
+    truck.addBox("lobster", new Date("10/29/2016"));
+    truck.addBox("crab", new Date("10/29/2016"));
+    truck.addBox("swordfish", new Date("10/24/2016"));
+    cout << "Shrimp:    " << truck.shrimp.size() << endl;
+    cout << "Lobster:   " << truck.lobster.size() << endl;
+    cout << "Crab:      " << truck.crab.size() << endl;
+    cout << "Swordfish: " << truck.swordfish.size() << endl;
     return 0;
 }
 
