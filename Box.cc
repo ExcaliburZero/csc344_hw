@@ -15,16 +15,20 @@ class Box {
          * if it has not yet been opened.
          *
          * @param itemsNumber The number of items to remove from the Box.
+         * @returns The number of items that could not be removed.
          */
-        void removeItems(int itemsNumber) {
+        int removeItems(int itemsNumber) {
             if (!isOpen) {
                 isOpen = true;
             }
 
-            if (maxItems >= itemsNumber) {
-                maxItems -= itemsNumber;
+            if (itemsLeft >= itemsNumber) {
+                itemsLeft -= itemsNumber;
+                return 0;
             } else {
-                maxItems = 0;
+                int remaining = itemsNumber - itemsLeft;
+                itemsLeft = 0;
+                return remaining;
             }
         };
 

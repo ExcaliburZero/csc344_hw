@@ -26,6 +26,19 @@ class Truck {
             }
         }
 
+        void removeItems(priority_queue <Box> *queue, int amount) {
+            int remainingAmount = amount;
+            while (remainingAmount != 0 && queue->size() > 0) {
+                Box topBox = queue->top();
+                queue->pop();
+                remainingAmount = topBox.removeItems(remainingAmount);
+
+                if (topBox.itemsLeft > 0) {
+                    queue->push(topBox);
+                }
+            }
+        }
+
         void processArrival(const Arrival *arrival) {
             if (arrival->type == "stock") {
                 processStock(arrival);
@@ -51,7 +64,19 @@ class Truck {
         };
 
         void processBuy(const Arrival *arrival) {
-            cout << "buy" << endl;
+            string foodType = arrival->foodType;
+            int amount = arrival->amount;
+            if (foodType == "shrimp") {
+                removeItems(&shrimp, amount);
+            } else if (foodType == "lobster") {
+                removeItems(&lobster, amount);
+            } else if (foodType == "crab") {
+                removeItems(&crab, amount);
+            } else if (foodType == "swordfish") {
+                removeItems(&swordfish, amount);
+            } else {
+                cout << "Invalid food type: " << foodType << endl;
+            }
         };
 };
 
