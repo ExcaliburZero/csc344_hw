@@ -14,6 +14,13 @@ class Truck {
         priority_queue <Box> crab;
         priority_queue <Box> swordfish;
 
+        /**
+         * Adds a box of the given food type with the given expiration date to
+         * the Truck.
+         *
+         * @param foodType The type of box to add.
+         * @param date The expiration date of the box to add.
+         */
         void addBox(string foodType, Date *date) {
             if (foodType == "shrimp") {
                 shrimp.push(Shrimp(date));
@@ -26,6 +33,13 @@ class Truck {
             }
         }
 
+        /**
+         * Removes the given amount of food items from the given queue of
+         * Boxes.
+         *
+         * @param queue The queue to get the boxes of food items from.
+         * @param amount The amount of food items to remove.
+         */
         void removeItems(priority_queue <Box> *queue, int amount) {
             int remainingAmount = amount;
             while (remainingAmount != 0 && queue->size() > 0) {
@@ -39,6 +53,11 @@ class Truck {
             }
         }
 
+        /**
+         * Processes the given Arrival.
+         *
+         * @param arrival The Arrival to be processed.
+         */
         void processArrival(const Arrival *arrival) {
             if (arrival->type == "stock") {
                 processStock(arrival);
@@ -49,6 +68,11 @@ class Truck {
             }
         };
 
+        /**
+         * Processes the given stock Arrival.
+         *
+         * @param arrival The stock Arrival to be processed.
+         */
         void processStock(const Arrival *arrival) {
             string foodType = arrival->foodType;
             if (foodType == "shrimp"    ||
@@ -63,6 +87,11 @@ class Truck {
             }
         };
 
+        /**
+         * Processes the given buy Arrival.
+         *
+         * @param arrival The buy Arrival to be processed.
+         */
         void processBuy(const Arrival *arrival) {
             string foodType = arrival->foodType;
             int amount = arrival->amount;

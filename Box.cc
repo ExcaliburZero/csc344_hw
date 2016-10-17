@@ -32,6 +32,13 @@ class Box {
             }
         };
 
+        /**
+         * Checks if the Box is less than another Box object. Based on whether
+         * the Boxes are open, and their expiration Date.
+         *
+         * @param o The other Box.
+         * @returns If this Box is less than the other Box.
+         */
         bool operator < (const Box& o) const {
             if (isOpen) {
                 if (o.isOpen) {

@@ -11,6 +11,13 @@ class Date {
         int month;
         int year;
 
+        /**
+         * Constructs a Date from the given day, month, and year.
+         *
+         * @param d The day.
+         * @param m The month.
+         * @param y The year.
+         */
         Date(int d, int m, int y) {
             day = d;
             month = m;
@@ -32,6 +39,12 @@ class Date {
             return to_string(month) + "/" + to_string(day) + "/" + to_string(year);
         };
 
+        /**
+         * Checks if this Date is less than the given other Date. Based on year, then month, then day.
+         *
+         * @param o The other Date.
+         * @returns If this Date is less than the other Date.
+         */
         bool operator < (const Date& o) const {
             if (year != o.year) {
                 return year < o.year;
