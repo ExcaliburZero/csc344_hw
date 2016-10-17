@@ -8,7 +8,7 @@
 #include "Swordfish.cc"
 
 class Truck {
-    public:
+    private:
         priority_queue <Box> shrimp;
         priority_queue <Box> lobster;
         priority_queue <Box> crab;
@@ -54,33 +54,18 @@ class Truck {
         }
 
         /**
-         * Processes the given Arrival.
-         *
-         * @param arrival The Arrival to be processed.
-         */
-        void processArrival(const Arrival *arrival) {
-            if (arrival->type == "stock") {
-                processStock(arrival);
-            } else if (arrival->type == "buy") {
-                processBuy(arrival);
-            } else {
-                cout << "Invalid arrival type: " << arrival->type << endl;
-            }
-        };
-
-        /**
          * Processes the given stock Arrival.
          *
          * @param arrival The stock Arrival to be processed.
          */
-        void processStock(const Arrival *arrival) {
-            string foodType = arrival->foodType;
+        void processStock(Arrival *arrival) {
+            string foodType = arrival->getFoodType();
             if (foodType == "shrimp"    ||
                 foodType == "lobster"   ||
                 foodType == "crab"      ||
                 foodType == "swordfish") {
-                for (int i = 0; i < arrival->amount; i++) {
-                    addBox(foodType, arrival->date);
+                for (int i = 0; i < arrival->getAmount(); i++) {
+                    addBox(foodType, arrival->getDate());
                 }
             } else {
                 cout << "Invalid food type: " << foodType << endl;
@@ -92,9 +77,9 @@ class Truck {
          *
          * @param arrival The buy Arrival to be processed.
          */
-        void processBuy(const Arrival *arrival) {
-            string foodType = arrival->foodType;
-            int amount = arrival->amount;
+        void processBuy(Arrival *arrival) {
+            string foodType = arrival->getFoodType();
+            int amount = arrival->getAmount();
             if (foodType == "shrimp") {
                 removeItems(&shrimp, amount);
             } else if (foodType == "lobster") {
@@ -107,6 +92,24 @@ class Truck {
                 cout << "Invalid food type: " << foodType << endl;
             }
         };
+
+    public:
+        /**
+         * Processes the given Arrival.
+         *
+         * @param arrival The Arrival to be processed.
+         */
+        void processArrival(Arrival *arrival) {
+            string arrivalType = arrival->getType();
+            if (arrivalType == "stock") {
+                processStock(arrival);
+            } else if (arrivalType == "buy") {
+                processBuy(arrival);
+            } else {
+                cout << "Invalid arrival type: " << arrivalType << endl;
+            }
+        };
+
 };
 
 #endif

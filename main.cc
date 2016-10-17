@@ -10,12 +10,8 @@ Arrival* getArrival();
 
 int main(int argc, char *argv[]) {
     Truck truck;
-    truck.addBox("swordfish", new Date("10/15/2016"));
-    truck.addBox("swordfish", new Date("10/15/2016"));
-    cout << truck.swordfish.top().itemsLeft << endl;
+    truck.processArrival(new Arrival("stock", new Date("10/20/2016"), "swordfish", 2));
     truck.processArrival(new Arrival("buy", new Date("10/15/2016"), "swordfish", 18));
-    cout << truck.swordfish.top().itemsLeft << endl;
-    cout << "Size: " << truck.swordfish.size() << endl;
     return 0;
 }
 

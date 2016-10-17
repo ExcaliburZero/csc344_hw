@@ -6,7 +6,7 @@
 using namespace std;
 
 class Date {
-    public:
+    private:
         int day;
         int month;
         int year;
@@ -24,6 +24,7 @@ class Date {
             year = y;
         };
 
+    public:
         /**
          * Constructs a Date from a date string in the format MM/DD/YYYY.
          *

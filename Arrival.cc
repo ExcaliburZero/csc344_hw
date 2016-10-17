@@ -6,12 +6,12 @@
 using namespace std;
 
 /**
- * An input event.
+ * An Arrival represents an input event.
  *
  * Ex: stock 10/01/2015 crab 3
  */
 class Arrival {
-    public:
+    private:
         /**
          * The type of the arrival. Ex: stock, buy.
          */
@@ -29,6 +29,7 @@ class Arrival {
          */
         int amount;
 
+    public:
         /**
          * Constructs an Arrival object.
          *
@@ -44,12 +45,10 @@ class Arrival {
             amount = a;
         };
 
-        string toString() {
-            return "type: " + type + "\n"
-                 + "date: " + date->toString() + "\n"
-                 + "food: " + foodType + "\n"
-                 + "amnt: " + to_string(amount);
-        };
+        string getType() { return type; };
+        Date* getDate() { return date; };
+        string getFoodType() { return foodType; };
+        int getAmount() { return amount; };
 };
 
 #endif
