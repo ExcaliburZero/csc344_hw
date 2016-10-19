@@ -110,6 +110,17 @@ class Truck {
             }
         };
 
+        friend ostream &operator<<(ostream &output, const Truck &truck) {
+            string truckString = "\nTruck\n";
+            truckString += "---------------\n";
+            truckString += "Shrimp:    " + to_string(truck.shrimp.size()) + "\n";
+            truckString += "Lobster:   " + to_string(truck.lobster.size()) + "\n";
+            truckString += "Crab:      " + to_string(truck.crab.size()) + "\n";
+            truckString += "Swordfish: " + to_string(truck.swordfish.size()) + "\n";
+            output << truckString;
+            return output;
+        }
+
 };
 
 #endif

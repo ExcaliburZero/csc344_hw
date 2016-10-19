@@ -11,19 +11,6 @@ class Date {
         int month;
         int year;
 
-        /**
-         * Constructs a Date from the given day, month, and year.
-         *
-         * @param d The day.
-         * @param m The month.
-         * @param y The year.
-         */
-        Date(int d, int m, int y) {
-            day = d;
-            month = m;
-            year = y;
-        };
-
     public:
         /**
          * Constructs a Date from a date string in the format MM/DD/YYYY.

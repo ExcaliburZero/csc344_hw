@@ -1,6 +1,7 @@
 #ifndef _Arrival_cc
 #define _Arrival_cc
 
+#include <sstream>
 #include "Date.cc"
 
 using namespace std;
@@ -31,18 +32,21 @@ class Arrival {
 
     public:
         /**
-         * Constructs an Arrival object.
+         * Creates an Arrival from the given arrival string.
          *
-         * @param t The type of the arrival.
-         * @param d The date related to the arrival.
-         * @param f The food type related to the arrival.
-         * @param a The amount related to the arrival.
+         * The string should be formatted as type, date, food type, and amount.
+         *
+         * Ex: "stock 10/12/2014 crab 4"
+         *
+         * @param arrivalString The string representing the Arrival.
          */
-        Arrival(string t, Date *d, string f, int a) {
-            type = t;
-            date = d;
-            foodType = f;
-            amount = a;
+        Arrival(string arrivalString) {
+            string dateString;
+
+            istringstream arrivalStream(arrivalString);
+            arrivalStream >> type >> dateString >> foodType >> amount;
+
+            date = new Date(dateString);
         };
 
         string getType() { return type; };
