@@ -23,10 +23,6 @@ class Date {
             year = stoi(dateString.substr(6, 10));
         };
 
-        string toString() {
-            return to_string(month) + "/" + to_string(day) + "/" + to_string(year);
-        };
-
         /**
          * Checks if this Date is less than the given other Date. Based on year, then month, then day.
          *
