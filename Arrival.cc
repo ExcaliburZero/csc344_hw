@@ -49,6 +49,10 @@ class Arrival {
             date = new Date(dateString);
         };
 
+        ~Arrival() {
+            delete date;
+        }
+
         string getType() { return type; };
         Date* getDate() { return date; };
         string getFoodType() { return foodType; };
