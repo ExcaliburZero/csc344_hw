@@ -52,6 +52,15 @@ class Box {
                 return *expirationDate < *o.expirationDate;
             }
         };
+
+        string toString() {
+            return "[" + to_string(itemsLeft) + "]";
+        }
+
+        friend ostream &operator<<(ostream &output, const Box &box) {
+            output << "[" << to_string(box.itemsLeft) << "]";
+            return output;
+        }
 };
 
 #endif

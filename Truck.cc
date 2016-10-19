@@ -2,12 +2,18 @@
 #define _Truck_cc
 
 #include <queue>
+#include <ostream>
 #include "Crab.cc"
 #include "Lobster.cc"
 #include "Shrimp.cc"
 #include "Swordfish.cc"
 
+using namespace std;
+
 class Truck {
+    friend string boxesToString (priority_queue <Box>);
+    friend ostream &operator<<(ostream &output, const Truck &truck);
+
     private:
         priority_queue <Box> shrimp;
         priority_queue <Box> lobster;
@@ -109,18 +115,38 @@ class Truck {
                 cout << "Invalid arrival type: " << arrivalType << endl;
             }
         };
+};
 
-        friend ostream &operator<<(ostream &output, const Truck &truck) {
-            string truckString = "\nTruck\n";
-            truckString += "---------------\n";
-            truckString += "Shrimp:    " + to_string(truck.shrimp.size()) + "\n";
-            truckString += "Lobster:   " + to_string(truck.lobster.size()) + "\n";
-            truckString += "Crab:      " + to_string(truck.crab.size()) + "\n";
-            truckString += "Swordfish: " + to_string(truck.swordfish.size()) + "\n";
-            output << truckString;
-            return output;
-        }
+string boxesToString (priority_queue <Box> boxes) {
+    string boxString = "";
+    priority_queue <Box> boxesCopy(boxes);
+    int numberOfBoxes = boxesCopy.size();
+    for (int i = 0; i < numberOfBoxes; i++) {
+        Box box = boxesCopy.top();
+        boxString += box.toString();
+        boxesCopy.pop();
+    }
+    return boxString;
+};
 
+ostream &operator<<(ostream &output, const Truck &truck) {
+    string divider = "---------------\n";
+    string dividerSmall = "------\n";
+    output << divider << "Truck\n" << divider;
+    output << "Shrimp:    " + to_string(truck.shrimp.size()) + "\n";
+    output << boxesToString(truck.shrimp) << "\n";
+    output << dividerSmall;
+    output << "Lobster:   " + to_string(truck.lobster.size()) + "\n";
+    output << boxesToString(truck.lobster) << "\n";
+    output << dividerSmall;
+    output << "Crab:      " + to_string(truck.crab.size()) + "\n";
+    output << boxesToString(truck.crab) << "\n";
+    output << dividerSmall;
+    output << "Swordfish: " + to_string(truck.swordfish.size()) + "\n";
+    output << boxesToString(truck.swordfish) << "\n";
+    output << dividerSmall;
+    output << "\n\n\n";
+    return output;
 };
 
 #endif
