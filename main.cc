@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
-#include "Arrival.cc"
-#include "Date.cc"
-#include "Truck.cc"
+#include "Arrival.h"
+#include "Date.h"
+#include "Truck.h"
 
 using namespace std;
 
