@@ -1,12 +1,24 @@
 #include <iostream>
+#include <sstream>
 #include "Date.h"
 
 using namespace std;
 
 Date::Date(string dateString) {
-    day = stoi(dateString.substr(3, 5));
-    month = stoi(dateString.substr(0, 2));
-    year = stoi(dateString.substr(6, 10));
+    string dStrings[3];
+    char delimiter = '/';
+
+    istringstream dateStream(dateString);
+    string token;
+    int i = 0;
+    while (i < 3 && getline(dateStream, token, delimiter)) {
+        dStrings[i] = token;
+        i++;
+    }
+
+    day = stoi(dStrings[0]);
+    month = stoi(dStrings[1]);
+    year = stoi(dStrings[2]);
 };
 
 bool Date::operator < (const Date& o) const {
