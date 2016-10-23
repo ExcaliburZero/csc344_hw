@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
         if (line.front() != eof) {
             Arrival *arrival = new Arrival(line);
             truck.processArrival(arrival);
-            delete arrival;
             cout << truck << endl;
         } else {
             running = false;

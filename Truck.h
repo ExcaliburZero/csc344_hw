@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <ostream>
+#include <vector>
 #include "Box.h"
 #include "FoodBoxes.h"
 
@@ -17,6 +18,33 @@ class Truck {
         priority_queue <Box> lobster;
         priority_queue <Box> crab;
         priority_queue <Box> swordfish;
+
+        vector <Arrival*> queuedBuys;
+
+        /**
+         * Gets the queue for the given food type.
+         *
+         * @param foodType The food type to return the queue for.
+         * @returns The queue of Boxes of the given foodType.
+         */
+        priority_queue <Box>* getQueue(string foodType);
+
+        /**
+         * Checks if the Truck has queued buys for the given food type.
+         *
+         * @param foodType The food type to check for queued buys of.
+         * @returns Whether or not the Truck has queued buys for the given food
+         * type.
+         */
+        bool hasQueuedBuys(string foodType);
+
+
+        /**
+         * Attempts to process the queued buys of the given food type.
+         *
+         * @param foodType The food type to process the queued buys of.
+         */
+        void processQueuedBuys(string foodType);
 
         /**
          * Adds a box of the given food type with the given expiration date to
@@ -37,6 +65,14 @@ class Truck {
         void removeItems(priority_queue <Box> *queue, int amount);
 
         /**
+         * Checks is the Truck can fill the given buy order.
+         *
+         * @param buy The buy order to check.
+         * @returns Whether the Truck can fill the given buy order or not.
+         */
+        bool canFillBuy(Arrival *buy);
+
+        /**
          * Processes the given stock Arrival.
          *
          * @param arrival The stock Arrival to be processed.
@@ -51,6 +87,8 @@ class Truck {
         void processBuy(Arrival *arrival);
 
     public:
+        ~Truck();
+
         /**
          * Processes the given Arrival.
          *

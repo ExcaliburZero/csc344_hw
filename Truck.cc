@@ -7,6 +7,28 @@
 
 using namespace std;
 
+Truck::~Truck() {
+    int numberOfBuys = queuedBuys.size();
+    
+    for (int i = 0; i < numberOfBuys; i++) {
+        delete queuedBuys[i];
+    }
+};
+
+priority_queue <Box>* Truck::getQueue(string foodType) {
+    if (foodType == "shrimp") {
+        return &shrimp;
+    } else if (foodType == "lobster") {
+        return &lobster;
+    } else if (foodType == "crab") {
+        return &crab;
+    } else if (foodType == "swordfish") {
+        return &swordfish;
+    } else {
+        return NULL;
+    }
+};
+
 void Truck::addBox(string foodType, Date *date) {
     if (foodType == "shrimp") {
         shrimp.push(Shrimp(date));
@@ -32,8 +54,60 @@ void Truck::removeItems(priority_queue <Box> *queue, int amount) {
     }
 };
 
+bool Truck::canFillBuy(Arrival *buy) {
+    string foodType = buy->getFoodType();
+    int amount = buy->getAmount();
+
+    // Calculate the amount of food of the given type that can be sold
+    int foodAvailable = 0;
+    priority_queue <Box>* foodQueue = getQueue(foodType);
+    if (foodQueue->size() > 0) {
+        Box topBox = foodQueue->top();
+
+        foodAvailable += topBox.itemsLeft;
+        foodAvailable += (foodQueue->size() - 1) * topBox.maxItems;
+    }
+
+    return amount <= foodAvailable;
+};
+
+bool Truck::hasQueuedBuys(string foodType) {
+    int numberOfBuys = queuedBuys.size();
+
+    if (numberOfBuys == 0) {
+        return false;
+    }
+
+    // Look for any queued buys of the given type
+    for (int i = 0; i < numberOfBuys; i++) {
+        Arrival* currentBuy = queuedBuys[i];
+        string currentBuyFood = currentBuy->getFoodType();
+
+        if (currentBuyFood == foodType) {
+            return true;
+        }
+    }
+    return false;
+};
+
+void Truck::processQueuedBuys(string foodType) {
+    int numberOfBuys = queuedBuys.size();
+
+    for (int i = 0; i < numberOfBuys; i++) {
+        Arrival* currentBuy = queuedBuys.at(i);
+        if (currentBuy->getFoodType() == foodType) {
+            // Process the queued buy, it will be re-added to the queue if it
+            // cannot be filled
+            queuedBuys.erase(queuedBuys.begin() + i);
+            processBuy(currentBuy);
+        }
+    }
+};
+
 void Truck::processStock(Arrival *arrival) {
     string foodType = arrival->getFoodType();
+
+    // Stock the new boxes
     if (foodType == "shrimp"    ||
         foodType == "lobster"   ||
         foodType == "crab"      ||
@@ -41,24 +115,34 @@ void Truck::processStock(Arrival *arrival) {
         for (int i = 0; i < arrival->getAmount(); i++) {
             addBox(foodType, arrival->getDate());
         }
+        delete arrival;
     } else {
         cout << "Invalid food type: " << foodType << endl;
+    }
+
+    // Attempt to process any queued buys
+    if (hasQueuedBuys(foodType)) {
+        processQueuedBuys(foodType);
     }
 };
 
 void Truck::processBuy(Arrival *arrival) {
     string foodType = arrival->getFoodType();
-    int amount = arrival->getAmount();
-    if (foodType == "shrimp") {
-        removeItems(&shrimp, amount);
-    } else if (foodType == "lobster") {
-        removeItems(&lobster, amount);
-    } else if (foodType == "crab") {
-        removeItems(&crab, amount);
-    } else if (foodType == "swordfish") {
-        removeItems(&swordfish, amount);
+    if (canFillBuy(arrival)) {
+        // If the buy can be filled, then fill it
+        int amount = arrival->getAmount();
+        if (foodType == "shrimp"    ||
+            foodType == "lobster"   ||
+            foodType == "crab"      ||
+            foodType == "swordfish") {
+            removeItems(getQueue(foodType), amount);
+            delete arrival;
+        } else {
+            cout << "Invalid food type: " << foodType << endl;
+        }
     } else {
-        cout << "Invalid food type: " << foodType << endl;
+        // If the buy cannot be filled, then queue it for later
+        queuedBuys.push_back(arrival);
     }
 };
 
