@@ -22,10 +22,16 @@
  *
  *   The arrival is then sent to the Truck, which acts based on the arrival.
  *
- *   If it is a stock event, then the specified amount of boxes of the given
- *   type and expiration date are added to the corresponding Box queue.
+ *   If it is a buy event, then first the Truck checks to see if it has enough
+ *   food of the given type to fill the order. If it has enough food, then it
+ *   fills the order. If it does not have enough food to fully fill the order,
+ *   then it queues the buy order to be filled once more stock comes in.
  *
- *   If it is a buy event, then ...
+ *   If it is a stock event, then the specified amount of boxes of the given
+ *   type and expiration date are added to the corresponding Box queue. Then
+ *   the Truck checks if there are any queued backorders for the given food
+ *   type, if so, then it attempts to fill any of the backorders that it has
+ *   enough stock to fill.
  *
  * Input:
  *   ./main < INPUT_FILE
@@ -52,6 +58,9 @@
  * Errors:
  *   - If no input is given other than just an EOF, the program ends without
  *     giving any output.
+ *
+ *   - If the user does not give in correctly structured arrival input, then the program
+ *     crashes.
  */
 #include <iostream>
 #include <string>
