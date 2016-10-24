@@ -11,6 +11,8 @@ using namespace std;
  * Ex: stock 10/01/2015 crab 3
  */
 class Arrival {
+    friend ostream &operator<<(ostream &output, Arrival &arrival);
+
     private:
         /**
          * The type of the arrival. Ex: stock, buy.

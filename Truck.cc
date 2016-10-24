@@ -115,6 +115,7 @@ void Truck::processStock(Arrival *arrival) {
         for (int i = 0; i < arrival->getAmount(); i++) {
             addBox(foodType, arrival->getDate());
         }
+        cout << "Stocked arrival:  " << *arrival << endl;
         delete arrival;
     } else {
         cout << "Invalid food type: " << foodType << endl;
@@ -136,6 +137,7 @@ void Truck::processBuy(Arrival *arrival) {
             foodType == "crab"      ||
             foodType == "swordfish") {
             removeItems(getQueue(foodType), amount);
+            cout << "Filled buy:       " << *arrival << endl;
             delete arrival;
         } else {
             cout << "Invalid food type: " << foodType << endl;
@@ -147,6 +149,8 @@ void Truck::processBuy(Arrival *arrival) {
 };
 
 void Truck::processArrival(Arrival *arrival) {
+    cout << "Recieved arrival: " << *arrival << endl;
+
     string arrivalType = arrival->getType();
     if (arrivalType == "stock") {
         processStock(arrival);

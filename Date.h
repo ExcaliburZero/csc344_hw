@@ -6,6 +6,8 @@
 using namespace std;
 
 class Date {
+    friend ostream &operator<<(ostream &output, const Date &date);
+
     private:
         int day;
         int month;
