@@ -22,10 +22,10 @@ bool Box::operator < (const Box& o) const {
         if (o.isOpen) {
             return *expirationDate < *o.expirationDate;
         } else {
-            return 0;
+            return false;
         }
     } else if (o.isOpen) {
-        return 1;
+        return true;
     } else {
         return *expirationDate < *o.expirationDate;
     }
