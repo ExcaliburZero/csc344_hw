@@ -61,6 +61,12 @@
  *
  *   - If the user does not give in correctly structured arrival input, then the program
  *     crashes.
+ *
+ *   - If the user gives a date that is not formatted correctly, then the
+ *     program may behave oddly or crash.
+ *
+ *   - If the user gives an unrecoginized arrival type, then an error message
+ *     is printed, and the arrival is ignored.
  */
 #include <iostream>
 #include <string>
