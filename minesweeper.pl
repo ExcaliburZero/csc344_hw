@@ -1,3 +1,6 @@
+:- initialization play.
+
 play() :-
-  write('Hello, World!'), nl
+  write('Hello, World!'), nl,
+  halt
   .
