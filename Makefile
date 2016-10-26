@@ -1,0 +1,2 @@
+play:
+	swipl minesweeper.pl
