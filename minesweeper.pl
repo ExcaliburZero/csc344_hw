@@ -1,8 +1,11 @@
+:- module(minesweeper, [
+        play/0
+    ]).
+
 :- initialization play.
 
-play() :-
-  write('Hello, World!'), nl,
-  createBoard(number(1), number(2), Board),
+play :-
+  createBoard(number(1), number(2), number(3), Board),
   printBoard(Board),
   halt
   .

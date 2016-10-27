@@ -1,10 +1,13 @@
-createBoard(number(Height), number(Width), [
+:- module(board, [
+        createBoard/4, printBoard/1
+    ]).
+
+createBoard(number(Height), number(Width), number(Mines), Board) :-
+  Board = [
         ['.', '.', 'X'],
+        ['.', 'X', '.'],
         ['X', '.', '.']
-    ]) :-
-  write('('),
-  write(Height), write(', '),
-  write(Width), write(')'), nl
+    ],
   .
 
 printBoard(Board) :-
@@ -23,5 +26,6 @@ printSingleRow([]).
 
 printSingleRow([Head|Tail]) :-
   write(Head),
+  write(' '),
   printSingleRow(Tail)
   .
