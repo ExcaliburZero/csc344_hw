@@ -1,2 +1,5 @@
+FILES = board.pl
+EXEC = minesweeper.pl
+
 play:
-	swipl minesweeper.pl
+	swipl $(FILES) $(EXEC)
