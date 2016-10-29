@@ -7,7 +7,7 @@ createBoard(number(Height), number(Width), number(Mines), Board) :-
         ['.', '.', 'X'],
         ['.', 'X', '.'],
         ['X', '.', '.']
-    ],
+    ]
   .
 
 printBoard(Board) :-

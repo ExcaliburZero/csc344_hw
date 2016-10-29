@@ -2,6 +2,7 @@
         play/0
     ]).
 
+:- use_module(board).
 :- initialization play.
 
 play :-
