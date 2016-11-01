@@ -71,25 +71,6 @@ bool Truck::canFillBuy(Arrival *buy) {
     return amount <= foodAvailable;
 };
 
-bool Truck::hasQueuedBuys(string foodType) {
-    int numberOfBuys = queuedBuys.size();
-
-    if (numberOfBuys == 0) {
-        return false;
-    }
-
-    // Look for any queued buys of the given type
-    for (int i = 0; i < numberOfBuys; i++) {
-        Arrival* currentBuy = queuedBuys[i];
-        string currentBuyFood = currentBuy->getFoodType();
-
-        if (currentBuyFood == foodType) {
-            return true;
-        }
-    }
-    return false;
-};
-
 void Truck::processQueuedBuys(string foodType) {
     int numberOfBuys = queuedBuys.size();
 
@@ -122,9 +103,7 @@ void Truck::processStock(Arrival *arrival) {
     }
 
     // Attempt to process any queued buys
-    if (hasQueuedBuys(foodType)) {
-        processQueuedBuys(foodType);
-    }
+    processQueuedBuys(foodType);
 };
 
 void Truck::processBuy(Arrival *arrival) {

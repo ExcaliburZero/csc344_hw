@@ -1,0 +1,42 @@
+Recieved arrival: buy 1/1/1 crab 5
+---------------
+Truck
+---------------
+Shrimp:    0
+
+------
+Lobster:   0
+
+------
+Crab:      0
+
+------
+Swordfish: 0
+
+------
+
+
+
+
+Recieved arrival: stock 1/1/1 crab 3
+Stocked arrival:  stock 1/1/1 crab 3
+Filled buy:       buy 1/1/1 crab 5
+---------------
+Truck
+---------------
+Shrimp:    0
+
+------
+Lobster:   0
+
+------
+Crab:      3
+[1][6][6]
+------
+Swordfish: 0
+
+------
+
+
+
+

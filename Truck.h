@@ -30,16 +30,6 @@ class Truck {
         priority_queue <Box>* getQueue(string foodType);
 
         /**
-         * Checks if the Truck has queued buys for the given food type.
-         *
-         * @param foodType The food type to check for queued buys of.
-         * @returns Whether or not the Truck has queued buys for the given food
-         * type.
-         */
-        bool hasQueuedBuys(string foodType);
-
-
-        /**
          * Attempts to process the queued buys of the given food type.
          *
          * @param foodType The food type to process the queued buys of.
