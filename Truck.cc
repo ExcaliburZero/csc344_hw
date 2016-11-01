@@ -168,6 +168,8 @@ ostream &operator<<(ostream &output, const Truck &truck) {
     output << "Swordfish: " + to_string(truck.swordfish.size()) + "\n";
     output << boxesToString(truck.swordfish) << "\n";
     output << dividerSmall;
+    output << "Queued Buys: " + to_string(truck.queuedBuys.size()) + "\n";
+    output << dividerSmall;
     output << "\n\n\n";
     return output;
 };
