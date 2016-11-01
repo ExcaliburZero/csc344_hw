@@ -16,8 +16,8 @@ Date::Date(string dateString) {
         i++;
     }
 
-    day = stoi(dStrings[0]);
-    month = stoi(dStrings[1]);
+    month = stoi(dStrings[0]);
+    day = stoi(dStrings[1]);
     year = stoi(dStrings[2]);
 };
 
