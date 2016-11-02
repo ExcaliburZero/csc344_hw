@@ -33,6 +33,10 @@ bool Date::operator < (const Date& o) const {
     }
 };
 
+string Date::into_string() {
+    return to_string(month) + "/" + to_string(day) + "/" + to_string(year);
+}
+
 ostream &operator<<(ostream &output, const Date &date) {
     output << to_string(date.month) << "/" << to_string(date.day) << "/" << to_string(date.year);
     return output;

@@ -28,6 +28,8 @@ class Date {
          * @returns If this Date is less than the other Date.
          */
         bool operator < (const Date& o) const;
+
+        string into_string();
 };
 
 #endif

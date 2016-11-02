@@ -18,21 +18,17 @@ int Box::removeItems(int itemsNumber) {
 };
 
 bool Box::operator < (const Box& o) const {
-    if (isOpen) {
-        if (o.isOpen) {
-            return *expirationDate < *o.expirationDate;
-        } else {
-            return false;
-        }
-    } else if (o.isOpen) {
+    if (isOpen == o.isOpen) {
+        return *expirationDate < *o.expirationDate;
+    } else if (isOpen) {
         return true;
     } else {
-        return *expirationDate < *o.expirationDate;
+        return false;
     }
 };
 
 string Box::toString() {
-    return "[" + to_string(itemsLeft) + "]";
+    return "[" + to_string(itemsLeft) + " " + expirationDate->into_string() + "]";
 }
 
 ostream& operator<<(ostream &output, const Box &box) {
