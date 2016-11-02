@@ -19,11 +19,11 @@ int Box::removeItems(int itemsNumber) {
 
 bool Box::operator < (const Box& o) const {
     if (isOpen == o.isOpen) {
-        return *expirationDate < *o.expirationDate;
+        return *o.expirationDate < *expirationDate;
     } else if (isOpen) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 };
 
