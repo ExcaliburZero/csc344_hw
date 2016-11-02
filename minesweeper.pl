@@ -13,7 +13,8 @@ play :-
   .
 
 promptPress(MineBoard, VisualBoard) :-
-  write('>'), nl,
-  pressPoint(MineBoard, VisualBoard, 1, 2),
-  printBoard(VisualBoard)
+  read(X), read(Y),
+  pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard),
+  printBoard(NewVisualBoard),
+  promptPress(MineBoard, NewVisualBoard)
   .

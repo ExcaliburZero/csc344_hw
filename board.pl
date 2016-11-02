@@ -1,5 +1,5 @@
 :- module(board, [
-        createBoard/5, printBoard/1, pressPoint/4
+        createBoard/5, printBoard/1, pressPoint/5
 
         , checkForMine/4
     ]).
@@ -41,9 +41,24 @@ printSingleRow([Head|Tail]) :-
 
 % Point Pressing
 
-pressPoint(MineBoard, VisualBoard, X, Y) :-
+% pressPoint(+MineBoard,
+%            +VisualBoard, +X, +Y, -NewVisualBoard)
+%
+% Attempts to press the given point on the given board. Returns an updated
+% visual board.
+pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
   write('pressed':X:Y), nl,
-  checkForMine(MineBoard, X, Y, IsMine)
+  checkForMine(MineBoard, X, Y, IsMine),
+  (
+      IsMine == 0 ->
+      write('Position is a mine!'), nl,
+      replace2DElem(VisualBoard, X, Y, '*', NewVisualBoard),
+      printBoard(NewVisualBoard),
+      write('You Lose!'), nl,
+      halt
+  ;   write('Position is not a mine.'), nl,
+      replace2DElem(VisualBoard, X, Y, ' ', NewVisualBoard)
+  )
   .
 
 % checkForMine(+MineBoard,
@@ -54,8 +69,7 @@ pressPoint(MineBoard, VisualBoard, X, Y) :-
 checkForMine(MineBoard, X, Y, IsMine) :-
   getElem(MineBoard, X, Row),
   getElem(Row, Y, Element),
-  IsMine is Element - "X",
-  write(IsMine), nl
+  IsMine is Element - "X"
   .
 
 % getElem(+List,
@@ -73,4 +87,32 @@ getElem([Head|_], 0, Element) :-
 getElem([_|Tail], Index, Element) :-
   Index2 is Index - 1,
   getElem(Tail, Index2, Element)
+  .
+
+% replaceElem(+InputList,
+%             +Index, +NewElement, -OutputList)
+%
+% Replaces the element at the given index in the given list with the given new
+% element.
+replaceElem([], _, _, []).
+
+replaceElem([_|T], 0, E, [E|T]).
+
+replaceElem([H|T], N, E, OList) :-
+  M is N - 1,
+  replaceElem(T, M, E, OList2),
+  OList = [H|OList2]
+  .
+
+% replace2DElem(+InputList
+%               +X, +Y, +NewElement, -OutputList)
+%
+% Replaces the element at the given indexes in the given 2D list with the
+% given new element.
+replace2DElem([], _, _, _, []).
+
+replace2DElem(IList, X, Y, E, OList) :-
+  getElem(IList, X, Row),
+  replaceElem(Row, Y, E, NewRow),
+  replaceElem(IList, X, NewRow, OList)
   .
