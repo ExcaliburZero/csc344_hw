@@ -57,7 +57,11 @@ pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
       write('You Lose!'), nl,
       halt
   ;   write('Position is not a mine.'), nl,
-      replace2DElem(VisualBoard, X, Y, ' ', NewVisualBoard)
+      write("X: "), write(X), nl,
+      write("Y: "), write(Y), nl,
+      getNeighbors(MineBoard, X, Y, Neighbors),
+      countMatch(Neighbors, "X", NumberMines),
+      replace2DElem(VisualBoard, X, Y, NumberMines, NewVisualBoard)
   )
   .
 
@@ -115,4 +119,75 @@ replace2DElem(IList, X, Y, E, OList) :-
   getElem(IList, X, Row),
   replaceElem(Row, Y, E, NewRow),
   replaceElem(IList, X, NewRow, OList)
+  .
+
+% getNeighbors(+List,
+%              +X, +Y, +Neighbors)
+%
+% Returns a list of all of the elements around the given index position.
+getNeighbors(List, X, Y, Neighbors) :-
+  length(List, Rows),
+  getElem(List, 0, Row1),
+  length(Row1 , Columns),
+  N0 = [],
+  PosX0 is X - 1,
+  PosY0 is Y - 1,
+  tryGetElem(List, PosX0, PosY0, N0, N1),
+  PosX1 is X - 1,
+  PosY1 is Y,
+  tryGetElem(List, PosX1, PosY1, N1, N2),
+  PosX2 is X - 1,
+  PosY2 is Y + 1,
+  tryGetElem(List, PosX2, PosY2, N2, N3),
+  PosX3 is X,
+  PosY3 is Y - 1,
+  tryGetElem(List, PosX3, PosY3, N3, N4),
+  PosX4 is X,
+  PosY4 is Y + 1,
+  tryGetElem(List, PosX4, PosY4, N4, N5),
+  PosX5 is X + 1,
+  PosY5 is Y - 1,
+  tryGetElem(List, PosX5, PosY5, N5, N6),
+  PosX6 is X + 1,
+  PosY6 is Y,
+  tryGetElem(List, PosX6, PosY6, N6, N7),
+  PosX7 is X + 1,
+  PosY7 is Y + 1,
+  tryGetElem(List, PosX7, PosY7, N7, N8),
+  Neighbors = N8
+  .
+
+% tryGetElem(+List
+%            +X, +Y, +PreList, -OutList)
+tryGetElem(List, X, Y, PreList, OutList) :-
+  (
+      Y > -1, X > -1 ->
+      nth0(0, List, Row0),
+      length(List, Rows),
+      length(Row0, Columns),
+      (
+          Y < Columns , X < Rows ->
+          nth0(X, List, Row),
+          nth0(Y, Row, Elem),
+          OutList = [Elem|PreList]
+      ;
+          OutList = PreList
+      )
+  ;
+      OutList = PreList
+  )
+  .
+
+% countMatch(+List
+%            +Element, -Count)
+countMatch([], _, 0).
+
+countMatch([Head|Tail], Element, Count) :-
+  countMatch(Tail, Element, CountTail),
+  (
+      Head = Element ->
+      Count is CountTail + 1
+  ;
+      Count = CountTail
+  )
   .
