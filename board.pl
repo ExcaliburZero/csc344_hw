@@ -6,14 +6,24 @@
 
 createBoard(number(Height), number(Width), number(Mines), MineBoard, VisualBoard) :-
   MineBoard = [
-        [".", ".", "X"],
-        [".", "X", "."],
-        ["X", ".", "."]
+        [".", ".", "X", ".", ".", ".", ".", "."],
+        [".", "X", ".", ".", ".", ".", ".", "."],
+        ["X", ".", ".", ".", ".", ".", ".", "."],
+        ["X", ".", ".", ".", ".", ".", ".", "."],
+        ["X", ".", ".", ".", ".", ".", ".", "."],
+        ["X", ".", ".", ".", ".", ".", ".", "."],
+        ["X", ".", ".", ".", ".", "X", "X", "."],
+        ["X", ".", ".", ".", ".", ".", ".", "."]
     ],
   VisualBoard = [
-        ["#", "#", "#"],
-        ["#", "#", "#"],
-        ["#", "#", "#"]
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."]
     ]
   .
 
@@ -48,20 +58,36 @@ printSingleRow([Head|Tail]) :-
 % visual board.
 pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
   write('pressed':X:Y), nl,
-  checkForMine(MineBoard, X, Y, IsMine),
+  nth0(0, MineBoard, Row0),
+  length(MineBoard, Rows),
+  length(Row0, Columns),
+
   (
-      IsMine == 0 ->
-      write('Position is a mine!'), nl,
-      replace2DElem(VisualBoard, X, Y, '*', NewVisualBoard),
-      printBoard(NewVisualBoard),
-      write('You Lose!'), nl,
-      halt
-  ;   write('Position is not a mine.'), nl,
-      write("X: "), write(X), nl,
-      write("Y: "), write(Y), nl,
-      getNeighbors(MineBoard, X, Y, Neighbors),
-      countMatch(Neighbors, "X", NumberMines),
-      replace2DElem(VisualBoard, X, Y, NumberMines, NewVisualBoard)
+      X > -1 , Y > -1 , X < Rows , Y < Columns -> 
+      checkForMine(MineBoard, X, Y, IsMine),
+      (
+          IsMine == 0 ->
+          write('Position is a mine!'), nl,
+          replace2DElem(VisualBoard, X, Y, '*', NewVisualBoard),
+          printBoard(NewVisualBoard),
+          write('You Lose!'), nl,
+          halt
+      ;
+          write('Position is not a mine.'), nl,
+          write("X: "), write(X), nl,
+          write("Y: "), write(Y), nl,
+          getNeighbors(MineBoard, X, Y, Neighbors),
+          countMatch(Neighbors, "X", NumberMines),
+          (
+              NumberMines > 0 ->
+              replace2DElem(VisualBoard, X, Y, NumberMines, NewVisualBoard)
+          ;
+              replace2DElem(VisualBoard, X, Y, "-", NewVisualBoardPre),
+              clearNeighbors(MineBoard, NewVisualBoardPre, X, Y, NewVisualBoard)
+          )
+      )
+  ;
+      write("Invalid Position"), nl
   )
   .
 
@@ -189,5 +215,71 @@ countMatch([Head|Tail], Element, Count) :-
       Count is CountTail + 1
   ;
       Count = CountTail
+  )
+  .
+
+% clearNeighbors(+MineBoard,
+%                +VisualBoard, +X, +Y, -OutVisualBoard)
+clearNeighbors(MineBoard, VisualBoard, X, Y, OutVisualBoard) :-
+  PosX0 is X - 1,
+  PosY0 is Y - 1,
+  handleNeighbor(MineBoard, VisualBoard, PosX0, PosY0, VisualBoard0),
+  PosX1 is X - 1,
+  PosY1 is Y,
+  handleNeighbor(MineBoard, VisualBoard0, PosX1, PosY1, VisualBoard1),
+  PosX2 is X - 1,
+  PosY2 is Y + 1,
+  handleNeighbor(MineBoard, VisualBoard1, PosX2, PosY2, VisualBoard2),
+  PosX3 is X,
+  PosY3 is Y - 1,
+  handleNeighbor(MineBoard, VisualBoard2, PosX3, PosY3, VisualBoard3),
+  PosX4 is X,
+  PosY4 is Y + 1,
+  handleNeighbor(MineBoard, VisualBoard3, PosX4, PosY4, VisualBoard4),
+  PosX5 is X + 1,
+  PosY5 is Y - 1,
+  handleNeighbor(MineBoard, VisualBoard4, PosX5, PosY5, VisualBoard5),
+  PosX6 is X + 1,
+  PosY6 is Y,
+  handleNeighbor(MineBoard, VisualBoard5, PosX6, PosY6, VisualBoard6),
+  PosX7 is X + 1,
+  PosY7 is Y + 1,
+  handleNeighbor(MineBoard, VisualBoard6, PosX7, PosY7, VisualBoard7),
+
+  OutVisualBoard = VisualBoard7
+  .
+
+handleNeighbor(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
+  getElem2(VisualBoard, X, Y, Elem),
+  getNeighbors(MineBoard, X, Y, Neighbors),
+  countMatch(Neighbors, "X", Mines),
+  (
+      Elem = "." ->
+      (
+          Mines = 0 ->
+          replace2DElem(VisualBoard, X, Y, "-", VisualBoardPre),
+          clearNeighbors(MineBoard, VisualBoardPre, X, Y, NewVisualBoard)
+      ;
+          replace2DElem(VisualBoard, X, Y, Mines, NewVisualBoard)
+      )
+  ;
+      NewVisualBoard = VisualBoard
+  )
+  .
+
+% getElem2(+Board,
+%          +X, +Y, Elem)
+%
+% Returns the elemtent in the given 2D board at the given position.
+getElem2(Board, X, Y, Elem) :-
+  nth0(0, Board, Row0),
+  length(Board, Rows),
+  length(Row0, Columns),
+  (
+      Y > -1 , X > -1 , X < Rows, Y < Columns ->
+      nth0(X, Board, Row),
+      nth0(Y, Row, Elem)
+  ;
+      Elem = "?"
   )
   .
