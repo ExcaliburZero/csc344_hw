@@ -74,8 +74,6 @@ pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
           halt
       ;
           write('Position is not a mine.'), nl,
-          write("X: "), write(X), nl,
-          write("Y: "), write(Y), nl,
           getNeighbors(MineBoard, X, Y, Neighbors),
           countMatch(Neighbors, "X", NumberMines),
           (
