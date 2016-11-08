@@ -14,11 +14,16 @@ play :-
   .
 
 promptPress(MineBoard, VisualBoard) :-
-  %read(X), read(Y),
-  readCommand(_, Xp, Yp),
+  readCommand(Type, Xp, Yp),
   atom_number(Xp, X),
   atom_number(Yp, Y),
-  pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard),
+  (
+      Type = 'Press' ->
+      pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard)
+  ;
+      Type = 'Flag' ->
+      flagPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard)
+  ),
   printBoard(NewVisualBoard),
   promptPress(MineBoard, NewVisualBoard)
   .

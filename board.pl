@@ -1,19 +1,19 @@
 :- module(board, [
-        createBoard/5, printBoard/1, pressPoint/5
+        createBoard/5, printBoard/1, pressPoint/5, flagPoint/5
 
         , checkForMine/4
     ]).
 
 createBoard(number(Height), number(Width), number(Mines), MineBoard, VisualBoard) :-
   MineBoard = [
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", "X", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", "X", ".", ".", ".", "."],
         [".", ".", "X", ".", ".", ".", ".", "."],
-        [".", "X", ".", ".", ".", ".", ".", "."],
-        ["X", ".", ".", ".", ".", ".", ".", "."],
-        ["X", ".", ".", ".", ".", ".", ".", "."],
-        ["X", ".", ".", ".", ".", ".", ".", "."],
-        ["X", ".", ".", ".", ".", ".", ".", "."],
-        ["X", ".", ".", ".", ".", "X", "X", "."],
-        ["X", ".", ".", ".", ".", ".", ".", "."]
+        [".", ".", ".", ".", ".", ".", "X", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."]
     ],
   VisualBoard = [
         [".", ".", ".", ".", ".", ".", ".", "."],
@@ -30,7 +30,7 @@ createBoard(number(Height), number(Width), number(Mines), MineBoard, VisualBoard
 % Board Printing
 
 printBoard(Board) :-
-  printRows(Board)
+  nl, printRows(Board), nl
   .
 
 printRows([]).
@@ -57,7 +57,6 @@ printSingleRow([Head|Tail]) :-
 % Attempts to press the given point on the given board. Returns an updated
 % visual board.
 pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
-  write('pressed':X:Y), nl,
   nth0(0, MineBoard, Row0),
   length(MineBoard, Rows),
   length(Row0, Columns),
@@ -80,12 +79,42 @@ pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
               NumberMines > 0 ->
               replace2DElem(VisualBoard, X, Y, NumberMines, NewVisualBoard)
           ;
-              replace2DElem(VisualBoard, X, Y, "-", NewVisualBoardPre),
+              replace2DElem(VisualBoard, X, Y, "_", NewVisualBoardPre),
               clearNeighbors(MineBoard, NewVisualBoardPre, X, Y, NewVisualBoard)
           )
       )
   ;
       write("Invalid Position"), nl
+  )
+  .
+
+flagPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
+  nth0(0, MineBoard, Row0),
+  length(MineBoard, Rows),
+  length(Row0, Columns),
+
+  (
+      X > -1 , Y > -1 , X < Rows , Y < Columns ->
+      nth0(X, VisualBoard, Row),
+      nth0(Y, Row, Element),
+      (
+        Element = "." ->
+        replace2DElem(VisualBoard, X, Y, "F", NewVisualBoard),
+        getUnFlaggedMines(MineBoard, NewVisualBoard, Count),
+        (
+            Count = 0 ->
+            printBoard(NewVisualBoard),
+            write("You win!"), nl,
+            halt
+        ;
+            write("")
+        )
+     ;
+         Element = "F" ->
+         replace2DElem(VisualBoard, X, Y, ".", NewVisualBoard)
+     ;
+         NewVisualBoard = VisualBoard
+     )
   )
   .
 
@@ -98,6 +127,27 @@ checkForMine(MineBoard, X, Y, IsMine) :-
   getElem(MineBoard, X, Row),
   getElem(Row, Y, Element),
   IsMine is Element - "X"
+  .
+
+getUnFlaggedMines([], [], 0).
+
+getUnFlaggedMines([MineHead|MineTail], [VisualHead|VisualTail], UnFlaggedMines) :-
+  getUnFlaggedMinesRow(MineHead, VisualHead, PreCount),
+  getUnFlaggedMines(MineTail, VisualTail, PostCount),
+  UnFlaggedMines is PreCount + PostCount
+  .
+
+getUnFlaggedMinesRow([], [], 0).
+
+getUnFlaggedMinesRow([MineHead|MineTail], [VisualHead|VisualTail], UnFlaggedMines) :-
+  (
+      MineHead = "X" , VisualHead = "." ->
+      Count = 1
+  ;
+      Count = 0
+  ),
+  getUnFlaggedMinesRow(MineTail, VisualTail, PreCount),
+  UnFlaggedMines is Count + PreCount
   .
 
 % getElem(+List,
@@ -255,7 +305,7 @@ handleNeighbor(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
       Elem = "." ->
       (
           Mines = 0 ->
-          replace2DElem(VisualBoard, X, Y, "-", VisualBoardPre),
+          replace2DElem(VisualBoard, X, Y, "_", VisualBoardPre),
           clearNeighbors(MineBoard, VisualBoardPre, X, Y, NewVisualBoard)
       ;
           replace2DElem(VisualBoard, X, Y, Mines, NewVisualBoard)
