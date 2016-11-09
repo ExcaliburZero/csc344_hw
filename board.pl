@@ -1,10 +1,10 @@
 :- module(board, [
-        createBoard/5, printBoard/1, pressPoint/5, flagPoint/5
+        createBoard/2, printBoard/1, pressPoint/5, flagPoint/5
 
         , checkForMine/4
     ]).
 
-createBoard(number(Height), number(Width), number(Mines), MineBoard, VisualBoard) :-
+createBoard(MineBoard, VisualBoard) :-
   MineBoard = [
         [".", ".", ".", ".", ".", ".", ".", "."],
         [".", ".", ".", ".", ".", ".", "X", "."],
@@ -27,12 +27,20 @@ createBoard(number(Height), number(Width), number(Mines), MineBoard, VisualBoard
     ]
   .
 
+%%%%%%%%%%
 % Board Printing
+%%%%%%%%%%
 
+% printBoard(+Board)
+%
+% Prints out the contents of the given board.
 printBoard(Board) :-
   nl, printRows(Board), nl
   .
 
+% printRows(+Rows)
+%
+% Prints out the rows of the given 2D list.
 printRows([]).
 
 printRows([Head|Tail]) :-
@@ -41,6 +49,9 @@ printRows([Head|Tail]) :-
   printRows(Tail)
   .
 
+% printSingleRow(+Row)
+%
+% Prints out the contents of the given list, space separated.
 printSingleRow([]).
 
 printSingleRow([Head|Tail]) :-
@@ -49,13 +60,17 @@ printSingleRow([Head|Tail]) :-
   printSingleRow(Tail)
   .
 
+%%%%%%%%%%
 % Point Pressing
+%%%%%%%%%%
 
 % pressPoint(+MineBoard,
 %            +VisualBoard, +X, +Y, -NewVisualBoard)
 %
 % Attempts to press the given point on the given board. Returns an updated
 % visual board.
+%
+% Ends the game if a bomb is pressed.
 pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
   nth0(0, MineBoard, Row0),
   length(MineBoard, Rows),
@@ -84,10 +99,24 @@ pressPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
           )
       )
   ;
-      write("Invalid Position"), nl
+      write("Invalid Position"), nl,
+      NewVisualBoard = VisualBoard
   )
   .
 
+%%%%%%%%%%
+% Position flagging
+%%%%%%%%%%
+
+% flagPoint(+MineBoard,
+%           +VisualBoard, +X, +Y, -NewVisualBoard)
+%
+% Attempts to flag the given point on the given board.
+%
+% If the position is not empty, then it will not be flagged.
+%
+% If all of the bombs are flagged after the flag is placed, then the game is
+% won.
 flagPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
   nth0(0, MineBoard, Row0),
   length(MineBoard, Rows),
@@ -118,17 +147,25 @@ flagPoint(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
   )
   .
 
+%%%%%%%%%%
+% Board Checking
+%%%%%%%%%%
+
 % checkForMine(+MineBoard,
 %              +X, +Y, -IsMine)
 %
 % Checks if the given position on the given board is a mine or not. Sets IsMine
 % to 0 if it is a mine, or a non-zero value if it is not a mine.
 checkForMine(MineBoard, X, Y, IsMine) :-
-  getElem(MineBoard, X, Row),
-  getElem(Row, Y, Element),
+  nth0(X, MineBoard, Row),
+  nth0(Y, Row, Element),
   IsMine is Element - "X"
   .
 
+% getUnFlaggedMines(+MineBoard
+%                   +VisualBoard, -UnFlaggedMines)
+%
+% Returns the number of unflagged mines in the given Visual and Mine boards.
 getUnFlaggedMines([], [], 0).
 
 getUnFlaggedMines([MineHead|MineTail], [VisualHead|VisualTail], UnFlaggedMines) :-
@@ -137,6 +174,10 @@ getUnFlaggedMines([MineHead|MineTail], [VisualHead|VisualTail], UnFlaggedMines) 
   UnFlaggedMines is PreCount + PostCount
   .
 
+% getUnFlaggedMinesRow(+MineBoardRow,
+%                      +VisualBoardRow, -UnFlaggedMines)
+%
+% Returns the number of unflagged mines in the given Visual and Mine rows.
 getUnFlaggedMinesRow([], [], 0).
 
 getUnFlaggedMinesRow([MineHead|MineTail], [VisualHead|VisualTail], UnFlaggedMines) :-
@@ -150,22 +191,70 @@ getUnFlaggedMinesRow([MineHead|MineTail], [VisualHead|VisualTail], UnFlaggedMine
   UnFlaggedMines is Count + PreCount
   .
 
-% getElem(+List,
-%         +Index, -Element)
+% tryGetElem(+List
+%            +X, +Y, +PreList, -OutList)
 %
-% Gets the element in the given list at the given index.
-getElem([], _, Element) :-
-  Element = []
+% Attempts to get the element at index (X, Y) from the given board and prepends
+% it to the given PreList and returns it though OutList.
+%
+% This predicate can be chained to collect the contents of a given board at
+% multiple points.
+tryGetElem(List, X, Y, PreList, OutList) :-
+  (
+      Y > -1, X > -1 ->
+      nth0(0, List, Row0),
+      length(List, Rows),
+      length(Row0, Columns),
+      (
+          Y < Columns , X < Rows ->
+          nth0(X, List, Row),
+          nth0(Y, Row, Elem),
+          OutList = [Elem|PreList]
+      ;
+          OutList = PreList
+      )
+  ;
+      OutList = PreList
+  )
   .
 
-getElem([Head|_], 0, Element) :-
-  Element = Head
+% countMatch(+List
+%            +Element, -Count)
+%
+% Counts the number of elements in the given list that are equal to the given
+% Element.
+countMatch([], _, 0).
+
+countMatch([Head|Tail], Element, Count) :-
+  countMatch(Tail, Element, CountTail),
+  (
+      Head = Element ->
+      Count is CountTail + 1
+  ;
+      Count = CountTail
+  )
   .
 
-getElem([_|Tail], Index, Element) :-
-  Index2 is Index - 1,
-  getElem(Tail, Index2, Element)
+% getElem2(+Board,
+%          +X, +Y, -Elem)
+%
+% Returns the element in the given 2D board at the given position.
+getElem2(Board, X, Y, Elem) :-
+  nth0(0, Board, Row0),
+  length(Board, Rows),
+  length(Row0, Columns),
+  (
+      Y > -1 , X > -1 , X < Rows, Y < Columns ->
+      nth0(X, Board, Row),
+      nth0(Y, Row, Elem)
+  ;
+      Elem = "?"
+  )
   .
+
+%%%%%%%%%%
+% Board Manipulation
+%%%%%%%%%%
 
 % replaceElem(+InputList,
 %             +Index, +NewElement, -OutputList)
@@ -190,19 +279,20 @@ replaceElem([H|T], N, E, OList) :-
 replace2DElem([], _, _, _, []).
 
 replace2DElem(IList, X, Y, E, OList) :-
-  getElem(IList, X, Row),
+  nth0(X, IList, Row),
   replaceElem(Row, Y, E, NewRow),
   replaceElem(IList, X, NewRow, OList)
   .
+
+%%%%%%%%%%
+% Neighboring Node Handlers
+%%%%%%%%%%
 
 % getNeighbors(+List,
 %              +X, +Y, +Neighbors)
 %
 % Returns a list of all of the elements around the given index position.
 getNeighbors(List, X, Y, Neighbors) :-
-  length(List, Rows),
-  getElem(List, 0, Row1),
-  length(Row1 , Columns),
   N0 = [],
   PosX0 is X - 1,
   PosY0 is Y - 1,
@@ -231,43 +321,13 @@ getNeighbors(List, X, Y, Neighbors) :-
   Neighbors = N8
   .
 
-% tryGetElem(+List
-%            +X, +Y, +PreList, -OutList)
-tryGetElem(List, X, Y, PreList, OutList) :-
-  (
-      Y > -1, X > -1 ->
-      nth0(0, List, Row0),
-      length(List, Rows),
-      length(Row0, Columns),
-      (
-          Y < Columns , X < Rows ->
-          nth0(X, List, Row),
-          nth0(Y, Row, Elem),
-          OutList = [Elem|PreList]
-      ;
-          OutList = PreList
-      )
-  ;
-      OutList = PreList
-  )
-  .
-
-% countMatch(+List
-%            +Element, -Count)
-countMatch([], _, 0).
-
-countMatch([Head|Tail], Element, Count) :-
-  countMatch(Tail, Element, CountTail),
-  (
-      Head = Element ->
-      Count is CountTail + 1
-  ;
-      Count = CountTail
-  )
-  .
 
 % clearNeighbors(+MineBoard,
 %                +VisualBoard, +X, +Y, -OutVisualBoard)
+%
+% Attempts to clear all of the neighbors of the given (X, Y) point on the given
+% Mine and Visual Board, where such neghboring points are not surrounded by any
+% mines.
 clearNeighbors(MineBoard, VisualBoard, X, Y, OutVisualBoard) :-
   PosX0 is X - 1,
   PosY0 is Y - 1,
@@ -297,6 +357,10 @@ clearNeighbors(MineBoard, VisualBoard, X, Y, OutVisualBoard) :-
   OutVisualBoard = VisualBoard7
   .
 
+% handleNeighbor(+MineBoard,
+%                +VisualBoard, +X, +Y, -NewVisualBoard)
+%
+% Attempts to clear the given point on the given Mine and Visual boards.
 handleNeighbor(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
   getElem2(VisualBoard, X, Y, Elem),
   getNeighbors(MineBoard, X, Y, Neighbors),
@@ -312,22 +376,5 @@ handleNeighbor(MineBoard, VisualBoard, X, Y, NewVisualBoard) :-
       )
   ;
       NewVisualBoard = VisualBoard
-  )
-  .
-
-% getElem2(+Board,
-%          +X, +Y, Elem)
-%
-% Returns the elemtent in the given 2D board at the given position.
-getElem2(Board, X, Y, Elem) :-
-  nth0(0, Board, Row0),
-  length(Board, Rows),
-  length(Row0, Columns),
-  (
-      Y > -1 , X > -1 , X < Rows, Y < Columns ->
-      nth0(X, Board, Row),
-      nth0(Y, Row, Elem)
-  ;
-      Elem = "?"
   )
   .
