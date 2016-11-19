@@ -1,6 +1,7 @@
 module Functions where
 
 import Data.List (splitAt)
+import System.Random (randomRIO)
 
 -- | Applies the given function three times to the given value.
 --
@@ -73,3 +74,48 @@ factors' 1 _ fs = fs
 factors' n d fs
   | n `mod` d == 0 = factors' (n `div` d) d (fs ++ [d])
   | otherwise      = factors' n (d + 1) fs
+
+-- | The function used to generate a curve.
+type CurveFunction = (Double -> Double)
+
+-- | An (X, Y) point on a graph.
+type Point = (Double, Double)
+
+-- | A bound on a graph.
+type Bound = (Double, Double)
+
+-- | Runs a Monte Carlo simulation to determine the area under the curve of the
+-- given graph in the given interval. Also takes in an upper y bound.
+monte :: CurveFunction -> Bound -> Double -> IO Double
+monte f ab yMax = monte' f ab yMax points
+  where
+    points = 100000
+
+-- | Runs a Monte Carlo simulation for area under a curve, allowing for the
+-- specification of the number of test points to use.
+monte' :: CurveFunction -> Bound -> Double -> Integer -> IO Double
+monte' f (a, b) yMax n = do
+  let randomPt = randomPoint (a, b) (0, yMax)
+  points <- mapM (const randomPt) [1..n]
+  let under       = filter (underCurve f) points
+  let totalPoints = realToFrac n
+  let pointsUnder = realToFrac $ length under
+  let area        = (b - a) * yMax
+  return $ area * (pointsUnder / totalPoints)
+
+-- | Returns a random (X, Y) point within the given X and Y bounds.
+randomPoint :: Bound -> Bound -> IO Point
+randomPoint (x1, x2) (y1, y2) = do
+  randomX <- randomRIO (x1, x2) ::  IO Double
+  randomY <- randomRIO (y1, y2) ::  IO Double
+  return (randomX, randomY)
+
+-- | Checks whether the given point is under the given curve.
+--
+-- >>> underCurve id (1, 0.5)
+-- True
+--
+-- >>> underCurve id (1, 2)
+-- False
+underCurve :: CurveFunction -> Point -> Bool
+underCurve f (x, y) = y < f x
