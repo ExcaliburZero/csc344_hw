@@ -51,3 +51,25 @@ replace r (b, e) list = start ++ r ++ end
   where
     (_    , end) = splitAt (e + 1) list
     (start, _  ) = splitAt b       list
+
+-- | Returns the prime factors of the given number.
+--
+-- >>> factors 2
+-- [2]
+--
+-- >>> factors 27
+-- [3,3,3]
+-- 
+-- >>> factors 89233
+-- [17,29,181]
+--
+-- >>> factors 84234324234
+-- [2,3,19,137,2269,2377]
+factors :: Integer -> [Integer]
+factors n = factors' n 2 []
+
+factors' :: Integer -> Integer -> [Integer] -> [Integer]
+factors' 1 _ fs = fs
+factors' n d fs
+  | n `mod` d == 0 = factors' (n `div` d) d (fs ++ [d])
+  | otherwise      = factors' n (d + 1) fs
