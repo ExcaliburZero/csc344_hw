@@ -12,7 +12,7 @@ factors 2
 factors 27
 factors 89233
 factors 84234324234
-monte (const 5) (0,5) 10
-monte id (2,3) 5
-monte (^2) (0,10) 200
+monte (const 5) (0,5) 5
+monte id (2,3) 3
+monte (^2) (0,10) 100
 :q
