@@ -2,9 +2,10 @@
 -- Student Name:        Christopher Wells
 -- Assignment Number:   4
 -- Due Date:            Dec. 8, 2016
-module Functions where
+module Functions (
+  irepeat, dup, replace, factors, monte
+) where
 
-import Data.List (splitAt)
 import System.Random (randomRIO)
 
 -- | Applies the given function three times to the given value.
