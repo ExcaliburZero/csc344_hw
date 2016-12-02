@@ -1,0 +1,4 @@
+Flag position 6 6
+Flag position 1 6
+Flag position 4 3
+Flag position 5 2

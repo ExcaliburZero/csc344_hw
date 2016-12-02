@@ -1,0 +1,18 @@
+irepeat (+1) 0
+irepeat (++ "!") "Hello, World"
+irepeat (map (+1)) [1,2,3]
+dup 'a' "the cat in the hat has a fat head"
+dup '1' "1010"
+dup '~' "~~Hello, World!!~~"
+replace [1,2,3] (4,5) [100,200,300,400,500,600,700]
+replace "big moneyed interests" (32,37) "a vote for me is a vote for the people"
+replace [Just 1, Just 2] (2, 4) [Nothing, Nothing, Nothing, Nothing, Nothing]
+replace [1,2,3] (4,5) []
+factors 2
+factors 27
+factors 89233
+factors 84234324234
+monte (const 5) (0,5) 5
+monte id (2,3) 3
+monte (^2) (0,10) 100
+:q
