@@ -1,3 +1,7 @@
+-- |
+-- Student Name:        Christopher Wells
+-- Assignment Number:   4
+-- Due Date:            Dec. 8, 2016
 module Functions where
 
 import Data.List (splitAt)
@@ -60,7 +64,7 @@ replace r (b, e) list = start ++ r ++ end
 --
 -- >>> factors 27
 -- [3,3,3]
--- 
+--
 -- >>> factors 89233
 -- [17,29,181]
 --
